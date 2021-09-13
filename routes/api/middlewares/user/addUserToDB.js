@@ -1,4 +1,4 @@
-const client = require("../../../../DB Connection/db");
+const pool = require("../../../../DB Connection/db");
 const { v4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
@@ -17,26 +17,24 @@ module.exports = async (req, res, next) => {
       mobile: body.mobile,
       email: body.email,
       passwordHash: await generatePasswordHash(body.password),
-      registeredAt:null,
-      lastLogin:null,
+      registeredAt: null,
+      lastLogin: null,
       profile: body.profile,
     },
     user_address: {
       id: v4(),
-      userId:null,
+      userId: null,
       present_address: body.present_address,
       permanent_address: body.permanent_address,
       city: body.city,
       province: body.province,
       country: body.country,
-      createdAt:null,
-      updatedAt:null,
+      createdAt: null,
+      updatedAt: null,
     },
   };
-  console.log(user)
-  addUserInfoToDB(user.user_info)
-//   handleErrors(addUserInfoToDB, user.user_info);
-//   handleErrors(addUserAddressInfoToDB, user.user_address, user.user_info.id);
+  await addUserInfoToDB(user.user_info);
+  await addUserAddressInfoToDB(user.user_address, user.user_info.id);
   next();
 };
 
@@ -47,65 +45,61 @@ async function generatePasswordHash(password) {
 }
 
 async function findRoleId(role) {
-//   await client.connect();
   const database = process.env.database;
-  const result = await client.query(
+  const result = await pool.query(
     `select id from ${database}.public.role_table rt where title = '${role}';`
   );
   const id = result.rows[0].id;
-  await client.end();
   return id;
 }
 
 async function addUserInfoToDB(user_info) {
-  await client.connect();
   const database = process.env.database;
-  const result = await client.query(`
-    INSERT
-	INTO
-	${database}.PUBLIC.USER_INFO (ID,
-	FIRSTNAME,
-	ROLEID,
-	MIDDLENAME,
-	LASTNAME,
-	MOBILE,
-	EMAIL,
-	PASSWORDHASH,
-	REGISTEREDAT,
-	LASTLOGIN,
-	PROFILE)
-VALUES (${user_info.id}, ${user_info.firstName},
-    ${user_info.roleId},${user_info.middleName},
-    ${user_info.lastName},${user_info.mobile},
-    ${user_info.email},${user_info.passwordHash}
-    ,current_timestamp,current_timestamp,
-    ${user_info.profile});
-    `);
-  await client.end();
-  console.log("sdafdasf",result);
+  const query = `
+  INSERT
+INTO
+${database}.PUBLIC.USER_INFO (ID,
+FIRSTNAME,
+ROLEID,
+MIDDLENAME,
+LASTNAME,
+MOBILE,
+EMAIL,
+PASSWORDHASH,
+REGISTEREDAT,
+LASTLOGIN,
+PROFILE)
+VALUES ('${user_info.id}', '${user_info.firstName}',
+  ${user_info.roleId},'${user_info.middleName}',
+  '${user_info.lastName}','${user_info.mobile}',
+  '${user_info.email}','${user_info.passwordHash}'
+  ,current_timestamp,current_timestamp,
+  '${user_info.profile}');
+  `;
+  await pool.query(query);
 }
 
 async function addUserAddressInfoToDB(user_address, userID) {
-//   await client.connect();
+  console.log(userID);
   const database = process.env.database;
-  const result = await client.query(`
-    INSERT
-	INTO
-	${database}.PUBLIC.address a (ID,
-    userId,
-	present_address,
-	permanent_address,
-	city,
-	province,
-	country,
-	createdAt,
-	updatedAt)
-VALUES (${user_address.id}, ${userID},
-    ${user_address.present_address},${user_address.permanent_address},
-    ${user_address.city},${user_address.province},
-    ${user_address.country},
-    ,current_timestamp,current_timestamp);
-    `);
-//   await client.end();
+  const query = `
+  INSERT
+INTO
+${database}.public.address(ID,
+  userId,
+present_address,
+permanent_address,
+city,
+province,
+country,
+createdAt,
+updatedAt)
+VALUES ('${user_address.id}', '${userID}',
+  '${user_address.present_address}','${user_address.permanent_address}',
+  '${user_address.city}','${user_address.province}',
+  '${user_address.country}'
+  ,current_timestamp,current_timestamp);
+  `;
+  const result = await pool.query(query);
   console.log(result);
 }

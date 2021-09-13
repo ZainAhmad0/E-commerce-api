@@ -19,3 +19,7 @@ FOREIGN KEY (roleId)
 
 CREATE UNIQUE INDEX uq_mobile ON user_info (mobile ASC);
 CREATE UNIQUE INDEX uq_email ON user_info (email ASC);
+
+
+ ALTER TABLE public.user_info ALTER COLUMN passwordhash TYPE varchar(100) USING passwordhash::varchar;
+ALTER TABLE public.user_info ALTER COLUMN id TYPE varchar(100) USING id::varchar;

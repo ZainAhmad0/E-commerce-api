@@ -14,3 +14,7 @@ CREATE TABLE address (
       REFERENCES user_info (id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION);
+
+
+ALTER TABLE public.address ALTER COLUMN userid TYPE varchar(100) USING userid::varchar;
+ALTER TABLE public.address ALTER COLUMN id TYPE varchar(100) USING id::varchar;

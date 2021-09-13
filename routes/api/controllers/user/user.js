@@ -9,6 +9,6 @@ const addUserToDB = require("../../middlewares/user/addUserToDB")
 // @description       user signup Route
 // @access            Public
 
-Router.post("/signup", [addUserToDB])
+Router.post("/signup", [userValidator,addUserToDB])
 
 module.exports = Router;

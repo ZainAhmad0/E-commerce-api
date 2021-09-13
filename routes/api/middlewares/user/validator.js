@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const client = require("../../../../DB Connection/db");
+const pool = require("../../../../DB Connection/db");
 const PasswordComplexity = require("joi-password-complexity");
 //utils
 const handleErrors = require("../../../../utils/handleErrors");
@@ -63,11 +63,9 @@ module.exports = async (req, res, next) => {
 
 // function to check that whether user already exists or not.
 async function isUserExists(email) {
-  await client.connect();
   const database = process.env.database;
-  const result = await client.query(
+  const result = await pool.query(
     `select *from ${database}.public.user_info ui where email = '${email}';`
   );
-  await client.end();
   return result.rowCount === 0 ? 0 : 1;
 }

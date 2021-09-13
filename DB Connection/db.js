@@ -1,18 +1,10 @@
-const { Client } = require("pg");
-const client = new Client({
+const { Pool } = require("pg");
+const pool = new Pool({
   host: process.env.db_host,
   port: process.env.db_port,
   user: process.env.db_user,
   password: process.env.db_password,
-  database: process.env.database,
+  database: process.env.database
 });
 
-client.on("connect", () => {
-  console.log("Postgres DB Connection Secured");
-});
-
-// client.on("end", () => {
-//   console.log("Postgres DB Connection ended");
-// });
-
-module.exports = client;
+module.exports = pool;
