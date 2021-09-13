@@ -2,8 +2,8 @@ const pool = require("../../../../DB Connection/db");
 const { v4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
-//utils
-const handleErrors = require("../../../../utils/handleErrors");
+const getJSONWebToken = require("./getJSONWebToken")
+
 
 module.exports = async (req, res, next) => {
   const { body } = req;
@@ -33,6 +33,10 @@ module.exports = async (req, res, next) => {
       updatedAt: null,
     },
   };
+  // binding user id and role id in request body 
+  req.body.userID=user.user_info.id;
+  req.body.roleId=user.user_info.roleId;
+  
   await addUserInfoToDB(user.user_info);
   await addUserAddressInfoToDB(user.user_address, user.user_info.id);
   next();
@@ -80,7 +84,6 @@ VALUES ('${user_info.id}', '${user_info.firstName}',
 }
 
 async function addUserAddressInfoToDB(user_address, userID) {
-  console.log(userID);
   const database = process.env.database;
   const query = `
   INSERT
@@ -100,6 +103,5 @@ VALUES ('${user_address.id}', '${userID}',
   '${user_address.country}'
   ,current_timestamp,current_timestamp);
   `;
-  const result = await pool.query(query);
-  console.log(result);
+  await pool.query(query);
 }
