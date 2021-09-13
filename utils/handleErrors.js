@@ -5,9 +5,9 @@ const handleErrors = (receivedFunction, args = null) => {
     } else {
       return receivedFunction(...args);
     }
-  } catch (error) {
+  } catch (err) {
     console.error(err);
-    res.status(err.status.error_code).send(err.status.error_message);
+    // res.status(err.status.error_code).send(err.status.error_message);
   }
 };
 

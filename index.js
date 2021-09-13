@@ -1,5 +1,6 @@
 const express = require('express');
 
+const app = express();
 
 //In it middleware
 app.use(express.json()); // this allows us to take request.body data

@@ -8,11 +8,11 @@ const client = new Client({
 });
 
 client.on("connect", () => {
-  console.log("Connection Secured");
+  console.log("Postgres DB Connection Secured");
 });
 
-client.on("end", () => {
-  console.log("Connection end");
-});
+// client.on("end", () => {
+//   console.log("Postgres DB Connection ended");
+// });
 
 module.exports = client;
