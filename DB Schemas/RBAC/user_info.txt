@@ -1,0 +1,21 @@
+CREATE TABLE user_info ( id VARCHAR(55) not null,
+firstName VARCHAR(50) null default null,
+roleId int not null,
+middleName VARCHAR(50) null default null,
+lastName VARCHAR(50) null default null,
+mobile VARCHAR(15) null,
+email VARCHAR(50) null,
+passwordHash VARCHAR(32) not null,
+registeredAt timestamp not null,
+lastLogin timestamp null default null,
+profile text null default null,
+primary key (id),
+CONSTRAINT fk_user_role
+FOREIGN KEY (roleId)
+  REFERENCES role_table (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+);
+
+CREATE UNIQUE INDEX uq_mobile ON user_info (mobile ASC);
+CREATE UNIQUE INDEX uq_email ON user_info (email ASC);

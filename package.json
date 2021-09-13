@@ -1,0 +1,33 @@
+{
+  "name": "e-commerce-api",
+  "version": "1.0.0",
+  "description": "E commerce applicatoin (API)",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZainAhmad0/E-commerce-api.git"
+  },
+  "author": "Zain Ahmad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZainAhmad0/E-commerce-api/issues"
+  },
+  "homepage": "https://github.com/ZainAhmad0/E-commerce-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.2",
+    "joi-password-complexity": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.1",
+    "ramda": "^0.27.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

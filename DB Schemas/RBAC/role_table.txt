@@ -1,0 +1,7 @@
+create table role_table ( id int not null,
+title VARCHAR(75) not null,
+description text null default null,
+active boolean not null default false,
+createdAt timestamp not null,
+updatedAt timestamp null default null,
+primary key (id));

@@ -1,0 +1,16 @@
+CREATE TABLE address (
+    id VARCHAR(55) NOT NULL,
+    userId VARCHAR(55) NULL DEFAULT NULL,
+    present_address VARCHAR(100) NULL DEFAULT NULL,
+    permanent_address VARCHAR(100) NULL DEFAULT NULL,
+    city VARCHAR(50) NULL DEFAULT NULL,
+    province VARCHAR(50) NULL DEFAULT NULL,
+    country VARCHAR(50) NULL DEFAULT NULL,
+    createdAt timestamp NOT NULL,
+    updatedAt timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_address_user
+      FOREIGN KEY (userId)
+      REFERENCES user_info (id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION);
