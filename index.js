@@ -1,6 +1,6 @@
 // const express = require('express');
 import express from "express";
-
+import user from "./routes/api/controllers/user/index.js"
 
 const app = express();
 
@@ -9,7 +9,7 @@ app.use(express.json()); // this allows us to take request.body data
 
 
 // Defining Routes
-app.use('/api/user', require('./routes/api/controllers/user/user'))
+app.use('/api/user', user)
 
 
 app.get('/', (req, res) => res.send("API Running"));

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon -r dotenv/config index.js"
   },
-  "type":"module",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZainAhmad0/E-commerce-api.git"

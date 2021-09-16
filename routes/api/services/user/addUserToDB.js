@@ -1,11 +1,10 @@
-const pool = require("../../../../DB Connection/db");
-const { v4 } = require("uuid");
-const bcrypt = require("bcryptjs");
+import pool from "../../../../DB Connection/index.js";
+import { v4 } from "uuid";
 
-const getJSONWebToken = require("./getJSONWebToken")
+// utils
+import {findRoleId,generatePasswordHash} from "../../../../utils/index.js"
 
-
-module.exports = async (req, res, next) => {
+export default async (req, res) => {
   const { body } = req;
   const user = {
     user_info: {
@@ -33,29 +32,15 @@ module.exports = async (req, res, next) => {
       updatedAt: null,
     },
   };
-  // binding user id and role id in request body 
-  req.body.userID=user.user_info.id;
-  req.body.roleId=user.user_info.roleId;
-  
+  // binding user id and role id in request body
+  req.body = {
+    userID: user.user_info.id,
+    roleId: user.user_info.roleId,
+    ...body,
+  };
   await addUserInfoToDB(user.user_info);
   await addUserAddressInfoToDB(user.user_address, user.user_info.id);
-  next();
 };
-
-async function generatePasswordHash(password) {
-  const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash(password, salt);
-  return passwordHash;
-}
-
-async function findRoleId(role) {
-  const database = process.env.database;
-  const result = await pool.query(
-    `select id from ${database}.public.role_table rt where title = '${role}';`
-  );
-  const id = result.rows[0].id;
-  return id;
-}
 
 async function addUserInfoToDB(user_info) {
   const database = process.env.database;

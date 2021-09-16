@@ -1,28 +1,34 @@
-const express = require("express");
+import express from "express";
+import { check, validationResult } from "express-validator";
+
+//router
 const Router = express.Router();
-const { check, validationResult } = require("express-validator");
-const bcrypt = require('bcryptjs');
 
-// for functional composition
-const ramda = require("ramda");
+// services
+import { addUserToDB } from "../../services/user/index.js";
 
-// db
-const pool = require("../../../../DB Connection/db");
+// utils
+import {
+  getJSONWebToken,
+  validateUserCredentials,
+} from "../../../../utils/index.js";
 
 // middlewares
-
-const userValidator = require("../../middlewares/user/validator");
-const addUserToDB = require("../../middlewares/user/addUserToDB");
-const getJSONWebToken = require("../../middlewares/user/getJSONWebToken");
+import { validator as userValidator } from "../../middlewares/user/index.js";
 
 // @route             POST api/user/signup
 // @description       user signup Route
 // @access            Public
 
-//functional composition
-// const composedUserMiddlewares = ramda.pipe(userValidator,addUserToDB,getJSONWebToken)
-
-Router.post("/signup", [userValidator, addUserToDB, getJSONWebToken]);
+Router.post("/signup", [userValidator], async (req, res) => {
+  await addUserToDB(req, res);
+  const payload = {
+    userID: req.body.userID,
+    roleId: req.body.roleId,
+  };
+  const token = await getJSONWebToken(payload);
+  return res.json({ token });
+});
 
 // @route             POST api/user/login
 // @description       user login Route
@@ -37,36 +43,18 @@ Router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
-
-    const { email, password } = req.body;
-    try {
-      let user = await pool.query(
-        `select *from inventory.public.user_info ui where email = '${email}';`
-      );
-      if (user.rowCount === 0) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Invalid Credentials" }] });
-      }
-      const passwordhash = user.rows[0].passwordhash;
-
-      const isMatch = await bcrypt.compare(password, passwordhash);
-
-      if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Invalid Credentials" }] });
-      }
-
-      // binding user id and role id in request body
-      req.body.userID = user.rows[0].id;
-      req.body.roleId = user.rows[0].roleId;
-      getJSONWebToken(req,res);
-    } catch (error) {
-      console.log(error.message);
-      return res.status(500).send("Server Error");
+    // validate user credentials
+    const isUserValid = await validateUserCredentials(req, res);
+    if (!isUserValid) {
+      return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
     }
+    const payload = {
+      userID: req.body.userID,
+      roleId: req.body.roleId,
+    };
+    const token = await getJSONWebToken(payload);
+    return res.json({ token });
   }
 );
 
-module.exports = Router;
+export default Router;

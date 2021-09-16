@@ -1,17 +1,15 @@
-const Joi = require("joi");
-const pool = require("../../../../DB Connection/db");
-const PasswordComplexity = require("joi-password-complexity");
+import Joi from "joi";
+import PasswordComplexity from "joi-password-complexity";
 //utils
-const handleErrors = require("../../../../utils/handleErrors");
+import { handleErrors, isUserExists } from "../../../../utils/index.js";
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   const roles = {
     A: "Buyer",
     B: "Seller",
     C: "Customer",
   };
   const { body } = req;
-
   const userValidatorSchema = Joi.object({
     role: Joi.string().valid(...Object.values(roles)),
     firstName: Joi.string().max(50).required(),
@@ -49,6 +47,7 @@ module.exports = async (req, res, next) => {
       error: err.details[0].message,
     });
   }
+  
   // checking that user already exists or not
   const { email } = body;
   const flag = await handleErrors(isUserExists, email);
@@ -60,12 +59,3 @@ module.exports = async (req, res, next) => {
     next();
   }
 };
-
-// function to check that whether user already exists or not.
-async function isUserExists(email) {
-  const database = process.env.database;
-  const result = await pool.query(
-    `select *from ${database}.public.user_info ui where email = '${email}';`
-  );
-  return result.rowCount === 0 ? 0 : 1;
-}
