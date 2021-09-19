@@ -1,0 +1,19 @@
+create table Item ( productId VARCHAR(100) not null,
+seller_Id VARCHAR(100) not null,
+quantity int not null default 0,
+sold int not null default 0,
+available int not null default 0,
+createdAt timestamp not null,
+updatedAt timestamp null default null,
+primary key (productId,
+seller_Id),
+constraint fk_item_product foreign key (productId) references inventory.public.product (id) on
+delete
+	no action on
+	update
+		no action,
+		constraint fk_seller_id foreign key (seller_Id) references inventory.public.user_info (id) on
+		delete
+			no action on
+			update
+				no action);

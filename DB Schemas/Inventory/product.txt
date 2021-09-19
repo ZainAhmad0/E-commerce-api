@@ -1,0 +1,15 @@
+create table Product ( id VARCHAR(100) not null,
+category_id int not null,
+title VARCHAR(100) not null,
+picture VARCHAR(60) null default null,
+price FLOAT NOT NULL DEFAULT 0,
+summary text null,
+active boolean not null default false,
+createdAt timestamp not null,
+updatedAt timestamp null default null,
+primary key (id),
+constraint fk_product_category foreign key (category_id) references category (category_id) on
+delete
+	no action on
+	update
+		no action );

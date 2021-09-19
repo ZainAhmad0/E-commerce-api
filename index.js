@@ -10,6 +10,7 @@ app.use(express.json()); // this allows us to take request.body data
 
 // Defining Routes
 app.use('/api/user', user)
+app.use('/api/', user)
 
 
 app.get('/', (req, res) => res.send("API Running"));
