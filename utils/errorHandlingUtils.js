@@ -3,7 +3,7 @@ function handleErrors (receivedFunction, args = null){
     if (args === null) {
       return receivedFunction();
     } else {
-      return receivedFunction(...args);
+      return receivedFunction(args);
     }
   } catch (err) {
     return err;

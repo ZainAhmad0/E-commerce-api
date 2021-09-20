@@ -10,7 +10,7 @@ export default (req, res, next) => {
   try {
     const jwtSecret = process.env.jwtSecret;
     const decoded = jwt.verify(token, jwtSecret);
-    req.user = { userID: decoded.userID, roldId: decoded.roleId};
+    req.user = { userID: decoded.userID, roleId: decoded.roleId};
     next();
   } catch (error) {
     return res.status(401).json({ msg: "Invalid Token" });

@@ -1,4 +1,4 @@
-import product from "./products";
-import category from "./category";
+import product from "./products.js";
+import category from "./category.js";
 
 export {product,category};

@@ -36,7 +36,7 @@ async function validateUserCredentials(req, res) {
       // binding user id and role id in request body
       req.body = {
         userID: user.rows[0].id,
-        roleId: user.rows[0].roleId,
+        roleId: user.rows[0].roleid,
         ...req.body,
       };
     }
