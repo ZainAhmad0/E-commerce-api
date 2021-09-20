@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs"
-import pool from "../DB Connection/index.js"
-
+import bcrypt from "bcryptjs";
+import pool from "../DB Connection/index.js";
 
 async function generatePasswordHash(password) {
   const salt = await bcrypt.genSalt(10);
@@ -46,4 +45,4 @@ async function validateUserCredentials(req, res) {
   }
 }
 
-export {validateUserCredentials,getJSONWebToken,generatePasswordHash}
+export { validateUserCredentials, getJSONWebToken, generatePasswordHash };

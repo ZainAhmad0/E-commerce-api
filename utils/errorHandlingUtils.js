@@ -1,4 +1,4 @@
-function handleErrors (receivedFunction, args = null){
+function handleErrors(receivedFunction, args = null) {
   try {
     if (args === null) {
       return receivedFunction();
@@ -7,7 +7,7 @@ function handleErrors (receivedFunction, args = null){
     }
   } catch (err) {
     return err;
-};
+  }
 }
 
-export {handleErrors};
+export { handleErrors };

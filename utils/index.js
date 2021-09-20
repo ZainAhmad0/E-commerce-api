@@ -1,4 +1,10 @@
-import { findRoleId, isUserExists,isCategoryExists,getUserRole } from "./dbUtils.js";
+import {
+  findRoleId,
+  isUserExists,
+  isCategoryExists,
+  getUserRole,
+  getProductCategory,
+} from "./dbUtils.js";
 import { handleErrors } from "./errorHandlingUtils.js";
 import {
   validateUserCredentials,
@@ -11,6 +17,7 @@ export {
   isUserExists,
   isCategoryExists,
   getUserRole,
+  getProductCategory,
   handleErrors,
   validateUserCredentials,
   getJSONWebToken,

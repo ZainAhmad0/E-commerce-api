@@ -1,3 +1,15 @@
-import { validateUserRoleForAddingCategory,addCategory } from "./category.js";
+import {
+  validateUserRoleForAddingCategory,
+  addCategory,
+  getCategories,
+  updateActiveStatusOfCategory,
+  updateCategory,
+} from "./category.js";
 
-export {validateUserRoleForAddingCategory,addCategory};
+export {
+  validateUserRoleForAddingCategory,
+  addCategory,
+  getCategories,
+  updateActiveStatusOfCategory,
+  updateCategory,
+};

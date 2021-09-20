@@ -1,3 +1,3 @@
-import categoryValidator from "./categoryValidator.js"
+import categoryValidator from "./categoryValidator.js";
 
-export {categoryValidator};
+export { categoryValidator };

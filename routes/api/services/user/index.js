@@ -1,2 +1,2 @@
 import addUserToDB from "./addUserToDB.js";
-export {addUserToDB};
+export { addUserToDB };

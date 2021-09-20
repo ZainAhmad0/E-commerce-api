@@ -1,2 +1,2 @@
-import validator from "./validator.js"
-export {validator};
+import validator from "./validator.js";
+export { validator };

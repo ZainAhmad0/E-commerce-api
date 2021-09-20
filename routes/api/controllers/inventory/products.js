@@ -1,7 +1,7 @@
 import express from "express";
 
 // middlewares
-import {auth} from "../../middlewares/auth/index.js"
+import { auth } from "../../middlewares/auth/index.js";
 
 //router
 const Router = express.Router();
@@ -10,40 +10,30 @@ const Router = express.Router();
 // @description       create a product
 // @access            private
 
-Router.post("/",[auth], async (req, res) => {
-
-})
+Router.post("/", [auth], async (req, res) => {});
 
 // @route             GET api/category/:id/products
 // @description       get particular category products
 // @access            private
 
-Router.get("/", async (req, res) => {
-    
-})
+Router.get("/", async (req, res) => {});
 
 // @route             GET api/category/:id/products/:id
 // @description       get particular product
 // @access            public
 
-Router.get("/", async (req, res) => {
-    
-})
+Router.get("/", async (req, res) => {});
 
 // @route             PATCH api/category/:id/products/:id
-// @description       update a product 
+// @description       update a product
 // @access            private
 
-Router.patch("/",[auth],  async (req, res) => {
-    
-})
+Router.patch("/", [auth], async (req, res) => {});
 
 // @route             DELETE api/category/:id/products/:id
-// @description       delete a product 
+// @description       delete a product
 // @access            private
 
-Router.patch("/", [auth], async (req, res) => {
-    
-})
+Router.patch("/", [auth], async (req, res) => {});
 
 export default Router;

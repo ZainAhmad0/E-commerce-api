@@ -47,7 +47,7 @@ export default async (req, res, next) => {
       error: err.details[0].message,
     });
   }
-  
+
   // checking that user already exists or not
   const { email } = body;
   const flag = await handleErrors(isUserExists, email);

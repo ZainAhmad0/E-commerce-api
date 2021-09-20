@@ -1,4 +1,4 @@
-import pool from "../DB Connection/index.js"
+import pool from "../DB Connection/index.js";
 
 async function findRoleId(role) {
   const database = process.env.database;
@@ -11,10 +11,18 @@ async function findRoleId(role) {
 
 async function getUserRole(id) {
   const database = process.env.database;
-  const query= `select title from ${database}.public.role_table rt where id = ${id};`
+  const query = `select title from ${database}.public.role_table rt where id = ${id};`;
   const result = await pool.query(query);
   const title = result.rows[0].title;
   return title;
+}
+
+async function getProductCategory(category_name) {
+  const database = process.env.database;
+  const query = `select *from ${database}.public.category c where category_name = '${category_name}';`;
+  const result = await pool.query(query);
+  const category = result.rows[0];
+  return category;
 }
 
 // function to check that whether user already exists or not.
@@ -29,9 +37,15 @@ async function isUserExists(email) {
 // function to check that whether product category already exists or not.
 async function isCategoryExists(category_name) {
   const database = process.env.database;
-  const query=`select *from ${database}.public.category c where category_name = '${category_name}';`
+  const query = `select *from ${database}.public.category c where category_name = '${category_name}';`;
   const result = await pool.query(query);
   return result.rowCount > 0 ? true : false;
 }
 
-export {findRoleId,isUserExists,isCategoryExists,getUserRole};
+export {
+  findRoleId,
+  isUserExists,
+  isCategoryExists,
+  getUserRole,
+  getProductCategory,
+};

@@ -1,2 +1,2 @@
-import auth from "./auth.js"
-export {auth};
+import auth from "./auth.js";
+export { auth };

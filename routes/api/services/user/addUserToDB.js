@@ -2,7 +2,7 @@ import pool from "../../../../DB Connection/index.js";
 import { v4 } from "uuid";
 
 // utils
-import {findRoleId,generatePasswordHash} from "../../../../utils/index.js"
+import { findRoleId, generatePasswordHash } from "../../../../utils/index.js";
 
 export default async (req, res) => {
   const { body } = req;
