@@ -80,7 +80,6 @@ Router.put("/update/:title", [auth], async (req, res) => {
   if (updatedProduct.active !== null) {
     product.active = updatedProduct.active;
   }
-  console.log("fdas ", title);
   await handleErrors(updateProduct, { title, product });
   await res.status(200).send("Product updated Successfully.");
 });
