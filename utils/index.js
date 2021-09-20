@@ -4,6 +4,9 @@ import {
   isCategoryExists,
   getUserRole,
   getProductCategory,
+  isProductExists,
+  getCategoryStatus,
+  getProductByTitle
 } from "./dbUtils.js";
 import { handleErrors } from "./errorHandlingUtils.js";
 import {
@@ -18,6 +21,9 @@ export {
   isCategoryExists,
   getUserRole,
   getProductCategory,
+  getCategoryStatus,
+  getProductByTitle,
+  isProductExists,
   handleErrors,
   validateUserCredentials,
   getJSONWebToken,

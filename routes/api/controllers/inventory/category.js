@@ -83,7 +83,7 @@ Router.patch("/updateActiveStatus/:category_name", [auth], async (req, res) => {
     res.status(404).send({ msg: "Invalid product category" });
   }
   await handleErrors(updateActiveStatusOfCategory, { category_name, active });
-  await res.status(201).send("Status Updated Successfully.");
+  await res.status(201).send("Cateogry Status Updated Successfully.");
 });
 
 export default Router;

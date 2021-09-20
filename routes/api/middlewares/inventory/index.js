@@ -1,3 +1,4 @@
 import categoryValidator from "./categoryValidator.js";
+import productValidator from "./productValidator.js";
 
-export { categoryValidator };
+export { categoryValidator,productValidator };

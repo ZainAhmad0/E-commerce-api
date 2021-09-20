@@ -25,6 +25,14 @@ async function getProductCategory(category_name) {
   return category;
 }
 
+async function getProductByTitle(title) {
+  const database = process.env.database;
+  const query = `select *from ${database}.public.product p where title = '${title}';`;
+  const result = await pool.query(query);
+  const product = result.rows[0];
+  return product;
+}
+
 // function to check that whether user already exists or not.
 async function isUserExists(email) {
   const database = process.env.database;
@@ -42,10 +50,29 @@ async function isCategoryExists(category_name) {
   return result.rowCount > 0 ? true : false;
 }
 
+// function to check that whether product already exists or not.
+async function isProductExists(title) {
+  const database = process.env.database;
+  const query = `select *from ${database}.public.product p where title = '${title}';`;
+  const result = await pool.query(query);
+  return result.rowCount > 0 ? true : false;
+}
+
+// function to get category status.
+async function getCategoryStatus(category_id) {
+  const database = process.env.database;
+  const query = `select *from ${database}.public.category c where category_id = '${category_id}';`;
+  const result = await pool.query(query);
+  return result.rows[0].active;
+}
+
 export {
   findRoleId,
   isUserExists,
   isCategoryExists,
   getUserRole,
   getProductCategory,
+  isProductExists,
+  getCategoryStatus,
+  getProductByTitle
 };
