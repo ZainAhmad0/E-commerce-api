@@ -58,6 +58,14 @@ async function isProductExists(title) {
   return result.rowCount > 0 ? true : false;
 }
 
+// function to check that whether product already exists or not.
+async function isProductExistsById(productId) {
+  const database = process.env.database;
+  const query = `select *from ${database}.public.product p where id = '${productId}';`;
+  const result = await pool.query(query);
+  return result.rowCount > 0 ? true : false;
+}
+
 // function to get category status.
 async function getCategoryStatus(category_id) {
   const database = process.env.database;
@@ -74,5 +82,6 @@ export {
   getProductCategory,
   isProductExists,
   getCategoryStatus,
-  getProductByTitle
+  getProductByTitle,
+  isProductExistsById
 };

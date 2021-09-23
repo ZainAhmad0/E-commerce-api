@@ -11,8 +11,14 @@ import {
   addProduct,
   getProductsByCategory,
   updateProduct,
-  updateActiveStatusOfProduct
+  updateActiveStatusOfProduct,
+  getProductById
 } from "./product.js";
+
+import {
+  validateUserRoleForAddingItem,
+  updateItem
+} from "./item.js";
 
 export {
   validateUserRoleForAddingCategory,
@@ -24,5 +30,8 @@ export {
   addProduct,
   getProductsByCategory,
   updateProduct,
-  updateActiveStatusOfProduct
+  updateActiveStatusOfProduct,
+  validateUserRoleForAddingItem,
+  getProductById,
+  updateItem
 };

@@ -20,6 +20,15 @@ async function getProductsByCategory(category_id) {
   return result.rows;
 }
 
+// function to get product by id
+async function getProductById(productId) {
+  const database = process.env.database;
+  const query = `select * from ${database}.public.product p where id='${productId}';`;
+  console.log(query);
+  const result = await pool.query(query);
+  return result.rows;
+}
+
 // function to add product in database
 async function addProduct(product) {
   const { id, category_id, title, picture, price, summary, active } = product;
@@ -51,5 +60,6 @@ export {
   addProduct,
   getProductsByCategory,
   updateProduct,
-  updateActiveStatusOfProduct
+  updateActiveStatusOfProduct,
+  getProductById
 };
