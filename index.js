@@ -22,3 +22,14 @@ app.get("/", (req, res) => res.send("API Running"));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port no ${PORT}`));
+
+
+// user
+// add user to db
+// validate user credentials
+// generate token payload
+
+
+// http status codes constant
+// naming convention
+// if statements in category...
