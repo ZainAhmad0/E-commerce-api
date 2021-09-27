@@ -16,8 +16,10 @@ import {
 } from "./product.js";
 
 import {
-  validateUserRoleForAddingItem,
-  updateItem
+  validateUserRoleForManipulatingItem,
+  updateItem,
+  checkAvailabality,
+  buyItem
 } from "./item.js";
 
 export {
@@ -31,7 +33,9 @@ export {
   getProductsByCategory,
   updateProduct,
   updateActiveStatusOfProduct,
-  validateUserRoleForAddingItem,
+  validateUserRoleForManipulatingItem,
   getProductById,
-  updateItem
+  updateItem,
+  checkAvailabality,
+  buyItem
 };

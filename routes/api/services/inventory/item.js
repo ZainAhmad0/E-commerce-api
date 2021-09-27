@@ -3,7 +3,7 @@ import { handleErrors, getUserRole } from "../../../../utils/index.js";
 import pool from "../../../../DB Connection/index.js";
 
 // function to validate user role to add items in inventory
-async function validateUserRoleForAddingItem(roleId) {
+async function validateUserRoleForManipulatingItem(roleId) {
   const title = await handleErrors(getUserRole, roleId);
   return title === "Seller" ? true : false;
 }
@@ -14,7 +14,7 @@ async function updateItem(req) {
   const database = process.env.database;
   const productInfo = await handleErrors(getItem, productId);
   let query = "";
-  if (productInfo.rowCount!==0) {
+  if (productInfo.rowCount !== 0) {
     const { quantity, available } = productInfo.rows[0];
     query = `
     UPDATE item SET productid = '${productId}', seller_id = '${req.user.userID}', quantity = ${req.body.quantity}+${quantity}, available =${req.body.quantity}+${available},updatedat =current_timestamp WHERE productid = '${productId}';
@@ -28,6 +28,26 @@ VALUES ('${productId}','${req.user.userID}',${req.body.quantity},${req.body.quan
   await pool.query(query);
 }
 
+// function to buy item
+async function buyItem(req) {
+  const { productId } = req.body;
+  const productInfo = await handleErrors(getItem, productId);
+  const { sold, available } = productInfo.rows[0];
+  const query = `
+    UPDATE item SET available =${available}-${req.body.quantity},sold=${sold}+${req.body.quantity}, updatedat =current_timestamp WHERE productid = '${productId}';
+    `;
+
+  await pool.query(query);
+}
+
+// function to check item availablility
+async function checkAvailabality(req) {
+  const { productId, quantity } = req.body;
+  const productInfo = await handleErrors(getItem, productId);
+  const { available } = productInfo.rows[0];
+  return available >= quantity;
+}
+
 // function to get item from database
 async function getItem(productId) {
   const database = process.env.database;
@@ -36,4 +56,4 @@ async function getItem(productId) {
   return result;
 }
 
-export { validateUserRoleForAddingItem, updateItem };
+export { validateUserRoleForManipulatingItem, updateItem, checkAvailabality,buyItem };
