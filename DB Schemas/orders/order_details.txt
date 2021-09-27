@@ -1,0 +1,11 @@
+CREATE TABLE order_details ( ID VARCHAR(100) NOT NULL,
+user_ID VARCHAR(100) NOT NULL,
+total INT NOT NULL,
+created_at timestamp,
+PRIMARY KEY (ID),
+CONSTRAINT FK_user_order FOREIGN KEY (user_ID) REFERENCES user_info (id) ON
+DELETE
+	NO ACTION ON
+	UPDATE
+		NO ACTION);
+	
