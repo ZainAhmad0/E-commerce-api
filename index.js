@@ -1,6 +1,6 @@
-// const express = require('express');
 import express from "express";
 import user from "./routes/api/controllers/user/index.js";
+import {cart} from "./routes/api/controllers/orders/index.js";
 import {
   product,
   category,
@@ -17,6 +17,7 @@ app.use("/api/user", user);
 app.use("/api/category", category);
 app.use("/api/products", product);
 app.use("/api/item", item);
+app.use("/api/cart", cart);
 
 app.get("/", (req, res) => res.send("API Running"));
 
