@@ -23,7 +23,10 @@ const Router = express.Router();
 // @access            private
 
 Router.patch("/update", [auth, itemValidator], async (req, res) => {
-  await validatePermission(req, res);
+  const isValid = await validatePermission(req.user);
+  if (!isValid) {
+    return res.status(401).send("Permissions denied");
+  }
   await handleErrors(updateItem, req);
   await res.status(201).send("Item updated Successfully.");
 });
@@ -33,9 +36,11 @@ Router.patch("/update", [auth, itemValidator], async (req, res) => {
 // @access            private
 
 Router.patch("/buy", [auth, itemValidator], async (req, res) => {
-  await validatePermission(req, res);
+  const isValid = await validatePermission(req.user);
+  if (!isValid) {
+    return res.status(401).send("Permissions denied");
+  }
   const availablityCheck = await handleErrors(checkAvailabality, req.body);
-  console.log(availablityCheck);
   if (!availablityCheck) {
     return res.status(404).send("Out of stock");
   }
@@ -44,15 +49,12 @@ Router.patch("/buy", [auth, itemValidator], async (req, res) => {
 });
 
 // function for validating permissions for manipulating items
-async function validatePermission(req, res) {
-  const { roleId } = req.user;
+async function validatePermission({ roleId }) {
   const isValid = await handleErrors(
     validateUserRoleForManipulatingItem,
     roleId
   );
-  if (!isValid) {
-    return res.status(401).send("Permissions denied");
-  }
+  return isValid;
 }
 
 export default Router;

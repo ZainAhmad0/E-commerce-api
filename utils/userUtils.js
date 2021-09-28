@@ -19,30 +19,25 @@ async function getJSONWebToken(payload) {
   }
 }
 
-async function validateUserCredentials(req, res) {
-  const { email, password } = req.body;
-  try {
-    let user = await pool.query(
-      `select *from inventory.public.user_info ui where email = '${email}';`
-    );
-    if (user.rowCount === 0) {
-      return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
-    }
-    const passwordhash = user.rows[0].passwordhash;
-
-    const isMatch = await bcrypt.compare(password, passwordhash);
-    if (isMatch) {
-      // binding user id and role id in request body
-      req.body = {
-        userID: user.rows[0].id,
-        roleId: user.rows[0].roleid,
-        ...req.body,
-      };
-    }
-    return isMatch;
-  } catch (error) {
-    return res.status(500).send("Server Error");
+async function validateUserCredentials(body) {
+  const { email, password } = body;
+  let user = await pool.query(
+    `select *from inventory.public.user_info ui where email = '${email}';`
+  );
+  if (user.rowCount === 0) {
+    return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
   }
+  const passwordhash = user.rows[0].passwordhash;
+  const isMatch = await bcrypt.compare(password, passwordhash);
+  if (isMatch) {
+    // binding user id and role id in request body
+    body = {
+      userID: user.rows[0].id,
+      roleId: user.rows[0].roleid,
+      ...body,
+    };
+  }
+  return isMatch;
 }
 
 export { validateUserCredentials, getJSONWebToken, generatePasswordHash };

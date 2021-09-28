@@ -5,13 +5,12 @@ import pool from "../../../../DB Connection/index.js";
 // function to validate user role to add items in inventory
 async function validateUserRoleForManipulatingItem(roleId) {
   const title = await handleErrors(getUserRole, roleId);
-  return title === "Seller" || "Buyer" ? true : false;
+  return title === "Seller" || "Buyer";
 }
 
 // function to update item to database
 async function updateItem(req) {
   const { productId } = req.body;
-  const database = process.env.database;
   const productInfo = await handleErrors(getItem, productId);
   let query = "";
   if (productInfo.rowCount !== 0) {
@@ -48,8 +47,7 @@ async function checkAvailabality({ productId, quantity }) {
 
 // function to get item from database
 async function getItem(productId) {
-  const database = process.env.database;
-  const query = `select * from ${database}.public.item i where productId='${productId}';`;
+  const query = `select * from inventory.public.item i where productId='${productId}';`;
   const result = await pool.query(query);
   return result;
 }

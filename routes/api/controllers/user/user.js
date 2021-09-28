@@ -11,6 +11,7 @@ import { addUserToDB } from "../../services/user/index.js";
 import {
   getJSONWebToken,
   validateUserCredentials,
+  handleErrors,
 } from "../../../../utils/index.js";
 
 // middlewares
@@ -21,13 +22,8 @@ import { validator as userValidator } from "../../middlewares/user/index.js";
 // @access            Public
 
 Router.post("/signup", [userValidator], async (req, res) => {
-  await addUserToDB(req, res);
-  const payload = {
-    userID: req.body.userID,
-    roleId: req.body.roleId,
-  };
-  const token = await getJSONWebToken(payload);
-  return res.json({ token });
+  await addUserToDB(req.body);
+  await returnToken(req, res);
 });
 
 // @route             POST api/user/login
@@ -44,17 +40,21 @@ Router.post(
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
     // validate user credentials
-    const isUserValid = await validateUserCredentials(req, res);
+    const isUserValid = await handleErrors(validateUserCredentials, req.body);
     if (!isUserValid) {
       return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
     }
-    const payload = {
-      userID: req.body.userID,
-      roleId: req.body.roleId,
-    };
-    const token = await getJSONWebToken(payload);
-    return res.json({ token });
+    await returnToken(req, res);
   }
 );
+
+async function returnToken(req, res) {
+  const payload = {
+    userID: req.body.userID,
+    roleId: req.body.roleId,
+  };
+  const token = await getJSONWebToken(payload);
+  return res.json({ token });
+}
 
 export default Router;

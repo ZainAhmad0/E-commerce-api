@@ -19,8 +19,8 @@ export default async (req, res, next) => {
 
   // checking that product exists or not
   const { productId } = body;
-  const flag = await handleErrors(isProductExistsById, productId);
-  if (!flag) {
+  const isProductExists = await handleErrors(isProductExistsById, productId);
+  if (!isProductExists) {
     return res.status(400).send({
       error: "Product doesnot exists",
     });

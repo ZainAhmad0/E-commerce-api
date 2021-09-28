@@ -4,8 +4,7 @@ import { v4 } from "uuid";
 // utils
 import { findRoleId, generatePasswordHash } from "../../../../utils/index.js";
 
-export default async (req, res) => {
-  const { body } = req;
+export default async (body) => {
   const user = {
     user_info: {
       id: v4(),
@@ -33,7 +32,7 @@ export default async (req, res) => {
     },
   };
   // binding user id and role id in request body
-  req.body = {
+  body = {
     userID: user.user_info.id,
     roleId: user.user_info.roleId,
     ...body,

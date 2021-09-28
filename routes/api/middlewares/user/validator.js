@@ -50,8 +50,8 @@ export default async (req, res, next) => {
 
   // checking that user already exists or not
   const { email } = body;
-  const flag = await handleErrors(isUserExists, email);
-  if (flag) {
+  const isUserValid = await handleErrors(isUserExists, email);
+  if (isUserValid) {
     return res.status(400).send({
       error: "User Already Exists",
     });

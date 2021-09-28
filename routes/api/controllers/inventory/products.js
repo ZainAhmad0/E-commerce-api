@@ -62,24 +62,12 @@ Router.put("/update/:title", [auth], async (req, res) => {
   }
   const product = await handleErrors(getProductByTitle, title);
   const updatedProduct = req.body;
-  if (updatedProduct.category_id !== null) {
-    product.category_id = updatedProduct.category_id;
-  }
-  if (updatedProduct.title !== null) {
-    product.title = updatedProduct.title;
-  }
-  if (updatedProduct.picture !== null) {
-    product.picture = updatedProduct.picture;
-  }
-  if (updatedProduct.price !== null) {
-    product.price = updatedProduct.price;
-  }
-  if (updatedProduct.summary !== null) {
-    product.summary = updatedProduct.summary;
-  }
-  if (updatedProduct.active !== null) {
-    product.active = updatedProduct.active;
-  }
+  product.category_id = updatedProduct.category_id | product.category_id;
+  product.title = updatedProduct.title | product.title;
+  product.picture = updatedProduct.picture | product.picture;
+  product.price = updatedProduct.price | product.price;
+  product.summary = updatedProduct.summary | product.summary;
+  product.active = updatedProduct.active | product.active;
   await handleErrors(updateProduct, { title, product });
   await res.status(200).send("Product updated Successfully.");
 });
@@ -91,8 +79,8 @@ Router.put("/update/:title", [auth], async (req, res) => {
 Router.patch("/updateActiveStatus/:title", [auth], async (req, res) => {
   const { title } = req.params;
   const { active } = req.body;
-  const flag = await handleErrors(isProductExists, title);
-  if (!flag) {
+  const isProductValid = await handleErrors(isProductExists, title);
+  if (!isProductValid) {
     res.status(404).send({ msg: "Invalid product" });
   }
   await handleErrors(updateActiveStatusOfProduct, { title, active });

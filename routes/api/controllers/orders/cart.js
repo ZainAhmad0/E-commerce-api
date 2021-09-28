@@ -27,7 +27,10 @@ const Router = express.Router();
 
 Router.post("/add", [auth, cartValidator], async (req, res) => {
   // validating user role for adding items in cart
-  await validateUserRoleForManipulatingCart(req, res);
+  const isValid = await validateUserRoleForManipulatingCart(req.user);
+  if (!isValid) {
+    return res.status(401).send("Permissions denied");
+  }
   // maintaining user shopping session
   await handleErrors(createUserShoppingSession, req.user.userID);
   // adding item into cart
@@ -66,19 +69,16 @@ Router.patch("/:product_id", [auth], async (req, res) => {
   await handleErrors(deleteItemFromCart, { product_id, ...req.user });
   // checking if cart is empty now then clearing shopping session
   const cartItems = await handleErrors(getItemsFromCart, req.user.userID);
-  if(cartItems===null){
+  if (cartItems === null) {
     await handleErrors(clearShoppingSession, req.user.userID);
   }
   await res.status(201).send("Item deleted from cart");
 });
 
 // function for validating user role for manipulating cart
-async function validateUserRoleForManipulatingCart(req, res) {
-  const { roleId } = req.user;
+async function validateUserRoleForManipulatingCart({ roleId }) {
   const isValid = await handleErrors(validateUserRoleForUsingCart, roleId);
-  if (!isValid) {
-    return res.status(401).send("Permissions denied");
-  }
+  return isValid;
 }
 
 export default Router;

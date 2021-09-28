@@ -7,7 +7,7 @@ import {
   isProductExists,
   getCategoryStatus,
   getProductByTitle,
-  isProductExistsById
+  isProductExistsById,
 } from "./dbUtils.js";
 import { handleErrors } from "./errorHandlingUtils.js";
 import {
@@ -29,5 +29,5 @@ export {
   validateUserCredentials,
   getJSONWebToken,
   generatePasswordHash,
-  isProductExistsById
+  isProductExistsById,
 };

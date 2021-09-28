@@ -12,14 +12,14 @@ import {
   getProductsByCategory,
   updateProduct,
   updateActiveStatusOfProduct,
-  getProductById
+  getProductById,
 } from "./product.js";
 
 import {
   validateUserRoleForManipulatingItem,
   updateItem,
   checkAvailabality,
-  buyItem
+  buyItem,
 } from "./item.js";
 
 export {
@@ -37,5 +37,5 @@ export {
   getProductById,
   updateItem,
   checkAvailabality,
-  buyItem
+  buyItem,
 };

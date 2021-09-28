@@ -30,7 +30,6 @@ Router.post("/checkout", [auth], async (req, res) => {
   if (cartItems.length === 0) {
     return res.status(404).send("Cart is empty");
   }
-
   // checking that whether items in card are avaialble in stock or not
   const unavailableItems = await checkAvailabilityOfCartItems(cartItems);
   if (unavailableItems.length != 0) {
