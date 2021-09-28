@@ -40,7 +40,7 @@ Router.post(
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
     // validate user credentials
-    const isUserValid = await handleErrors(validateUserCredentials, req.body);
+    const isUserValid = await handleErrors(validateUserCredentials, req);
     if (!isUserValid) {
       return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
     }

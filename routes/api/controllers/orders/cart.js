@@ -69,7 +69,7 @@ Router.patch("/:product_id", [auth], async (req, res) => {
   await handleErrors(deleteItemFromCart, { product_id, ...req.user });
   // checking if cart is empty now then clearing shopping session
   const cartItems = await handleErrors(getItemsFromCart, req.user.userID);
-  if (cartItems === null) {
+  if (cartItems.length === 0) {
     await handleErrors(clearShoppingSession, req.user.userID);
   }
   await res.status(201).send("Item deleted from cart");

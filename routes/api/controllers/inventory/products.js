@@ -56,18 +56,18 @@ Router.get("/category/:category_id", async (req, res) => {
 
 Router.put("/update/:title", [auth], async (req, res) => {
   const { title } = req.params;
-  const flag = await handleErrors(isProductExists, title);
-  if (!flag) {
+  const productExists = await handleErrors(isProductExists, title);
+  if (!productExists) {
     res.status(404).send({ msg: "Invalid product" });
   }
   const product = await handleErrors(getProductByTitle, title);
   const updatedProduct = req.body;
-  product.category_id = updatedProduct.category_id | product.category_id;
-  product.title = updatedProduct.title | product.title;
-  product.picture = updatedProduct.picture | product.picture;
-  product.price = updatedProduct.price | product.price;
-  product.summary = updatedProduct.summary | product.summary;
-  product.active = updatedProduct.active | product.active;
+  product.category_id = updatedProduct.category_id || product.category_id;
+  product.title = updatedProduct.title || product.title;
+  product.picture = updatedProduct.picture || product.picture;
+  product.price = updatedProduct.price || product.price;
+  product.summary = updatedProduct.summary || product.summary;
+  product.active = updatedProduct.active || product.active;
   await handleErrors(updateProduct, { title, product });
   await res.status(200).send("Product updated Successfully.");
 });

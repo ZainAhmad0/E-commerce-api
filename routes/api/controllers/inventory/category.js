@@ -59,9 +59,9 @@ Router.put("/update/:category_name", [auth], async (req, res) => {
   const category = await handleErrors(getProductCategory, category_name);
   const updatedCategory = req.body;
   category.category_name =
-    updatedCategory.category_name | category.category_name;
-  category.description = updatedCategory.description | category.description;
-  category.active = updatedCategory.active | category.active;
+    updatedCategory.category_name || category.category_name;
+  category.description = updatedCategory.description || category.description;
+  category.active = updatedCategory.active || category.active;
   await handleErrors(updateCategory, { category_name, category });
   await res.status(200).send("Category updated Successfully.");
 });

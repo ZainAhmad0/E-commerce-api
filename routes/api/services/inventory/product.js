@@ -8,7 +8,8 @@ import { handleErrors } from "../../../../utils/index.js";
 
 // function to validate user role to add category
 async function validateUserRoleForAddingProduct(roleId) {
-  const title = await handleErrors(getUserRole, roleId);
+  const id = roleId;
+  const title = await handleErrors(getUserRole, id);
   return title === "Seller";
 }
 

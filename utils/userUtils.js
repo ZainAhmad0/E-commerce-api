@@ -19,8 +19,8 @@ async function getJSONWebToken(payload) {
   }
 }
 
-async function validateUserCredentials(body) {
-  const { email, password } = body;
+async function validateUserCredentials(req) {
+  const { email, password } = req.body;
   let user = await pool.query(
     `select *from inventory.public.user_info ui where email = '${email}';`
   );
@@ -31,10 +31,10 @@ async function validateUserCredentials(body) {
   const isMatch = await bcrypt.compare(password, passwordhash);
   if (isMatch) {
     // binding user id and role id in request body
-    body = {
+    req.body = {
       userID: user.rows[0].id,
       roleId: user.rows[0].roleid,
-      ...body,
+      ...req.body,
     };
   }
   return isMatch;

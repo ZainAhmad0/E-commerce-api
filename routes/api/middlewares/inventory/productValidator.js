@@ -27,9 +27,9 @@ export default async (req, res, next) => {
 
   // checking that product already exists or not
   const { title, category_id } = body;
-  const isProductExists = await handleErrors(isProductExists, title);
+  const doesProductExists = await handleErrors(isProductExists, title);
   const active = await handleErrors(getCategoryStatus, category_id); // if product category is active or not
-  if (isProductExists) {
+  if (doesProductExists) {
     return res.status(400).send({
       error: "Product Already Exists",
     });
