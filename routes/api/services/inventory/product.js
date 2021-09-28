@@ -24,7 +24,6 @@ async function getProductsByCategory(category_id) {
 async function getProductById(productId) {
   const database = process.env.database;
   const query = `select * from ${database}.public.product p where id='${productId}';`;
-  console.log(query);
   const result = await pool.query(query);
   return result.rows;
 }

@@ -6,7 +6,6 @@ import { handleErrors, getUserRole } from "../../../../utils/index.js";
 
 // uuid
 import { v4 } from "uuid";
-import { composeP } from "ramda";
 
 // function to validate user role to adding items into cart
 async function validateUserRoleForUsingCart(roleId) {
@@ -19,7 +18,6 @@ async function createUserShoppingSession(userID) {
   if (await isShoppingSessionExists(userID)) {
     return;
   } else {
-    console.log("OI am coming here");
     const query = `insert into inventory.public.shopping_session (id,user_id) values ('${v4()}','${userID}');`;
     await pool.query(query);
   }

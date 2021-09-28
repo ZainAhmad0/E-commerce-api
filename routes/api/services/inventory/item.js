@@ -5,7 +5,7 @@ import pool from "../../../../DB Connection/index.js";
 // function to validate user role to add items in inventory
 async function validateUserRoleForManipulatingItem(roleId) {
   const title = await handleErrors(getUserRole, roleId);
-  return title === "Seller" ? true : false;
+  return title === "Seller" || "Buyer" ? true : false;
 }
 
 // function to update item to database
@@ -29,20 +29,18 @@ VALUES ('${productId}','${req.user.userID}',${req.body.quantity},${req.body.quan
 }
 
 // function to buy item
-async function buyItem(req) {
-  const { productId } = req.body;
+async function buyItem({ productId, quantity }) {
   const productInfo = await handleErrors(getItem, productId);
   const { sold, available } = productInfo.rows[0];
   const query = `
-    UPDATE item SET available =${available}-${req.body.quantity},sold=${sold}+${req.body.quantity}, updatedat =current_timestamp WHERE productid = '${productId}';
+    UPDATE item SET available =${available}-${quantity},sold=${sold}+${quantity}, updatedat =current_timestamp WHERE productid = '${productId}';
     `;
 
   await pool.query(query);
 }
 
 // function to check item availablility
-async function checkAvailabality(req) {
-  const { productId, quantity } = req.body;
+async function checkAvailabality({ productId, quantity }) {
   const productInfo = await handleErrors(getItem, productId);
   const { available } = productInfo.rows[0];
   return available >= quantity;
@@ -56,4 +54,9 @@ async function getItem(productId) {
   return result;
 }
 
-export { validateUserRoleForManipulatingItem, updateItem, checkAvailabality,buyItem };
+export {
+  validateUserRoleForManipulatingItem,
+  updateItem,
+  checkAvailabality,
+  buyItem,
+};

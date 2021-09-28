@@ -28,18 +28,18 @@ Router.patch("/update", [auth, itemValidator], async (req, res) => {
   await res.status(201).send("Item updated Successfully.");
 });
 
-// @route             PATCH api/item/
+// @route             PATCH api/item/buy
 // @description       update item
 // @access            private
 
 Router.patch("/buy", [auth, itemValidator], async (req, res) => {
   await validatePermission(req, res);
-  const availablityCheck = await handleErrors(checkAvailabality, req)
-  console.log(availablityCheck)
+  const availablityCheck = await handleErrors(checkAvailabality, req.body);
+  console.log(availablityCheck);
   if (!availablityCheck) {
     return res.status(404).send("Out of stock");
   }
-  await handleErrors(buyItem, req);
+  await handleErrors(buyItem, req.body);
   await res.status(201).send("Successfull");
 });
 

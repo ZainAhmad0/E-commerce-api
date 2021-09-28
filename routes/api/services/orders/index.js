@@ -7,8 +7,10 @@ import {
   getItemsFromCart,
   clearCart,
   clearShoppingSession,
-  deleteItemFromCart
+  deleteItemFromCart,
 } from "./cart.js";
+
+import { checkoutOrder } from "./order.js";
 
 export {
   validateUserRoleForUsingCart,
@@ -19,5 +21,6 @@ export {
   getItemsFromCart,
   clearCart,
   clearShoppingSession,
-  deleteItemFromCart
+  deleteItemFromCart,
+  checkoutOrder,
 };
