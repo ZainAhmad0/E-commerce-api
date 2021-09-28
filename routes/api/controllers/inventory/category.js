@@ -1,5 +1,8 @@
 import express from "express";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 // middlewares
 import { auth } from "../../middlewares/auth/index.js";
 
@@ -31,10 +34,10 @@ Router.post("/", [auth, categoryValidator], async (req, res) => {
   const { roleId } = req.user;
   const isValid = await handleErrors(validateUserRoleForAddingCategory, roleId);
   if (!isValid) {
-    return res.status(401).send("Permissions denied");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Permissions denied");
   }
   await handleErrors(addCategory, req.body);
-  await res.status(201).send("Category Added Successfully.");
+  await res.status(StatusCodes.CREATED).send("Category Added Successfully.");
 });
 
 // @route             Get api/category/
@@ -43,7 +46,7 @@ Router.post("/", [auth, categoryValidator], async (req, res) => {
 
 Router.get("/", async (req, res) => {
   const catagories = await getCategories();
-  res.status(200).json(catagories);
+  res.status(StatusCodes.OK).json(catagories);
 });
 
 // @route             PATCH api/category/:category_name
@@ -52,9 +55,9 @@ Router.get("/", async (req, res) => {
 
 Router.put("/update/:category_name", [auth], async (req, res) => {
   const { category_name } = req.params;
-  const flag = await handleErrors(isCategoryExists, category_name);
-  if (!flag) {
-    res.status(404).send({ msg: "Invalid product category" });
+  const categoryExists = await handleErrors(isCategoryExists, category_name);
+  if (!categoryExists) {
+    res.status(StatusCodes.NOT_FOUND).send({ msg: "Invalid product category" });
   }
   const category = await handleErrors(getProductCategory, category_name);
   const updatedCategory = req.body;
@@ -63,7 +66,7 @@ Router.put("/update/:category_name", [auth], async (req, res) => {
   category.description = updatedCategory.description || category.description;
   category.active = updatedCategory.active || category.active;
   await handleErrors(updateCategory, { category_name, category });
-  await res.status(200).send("Category updated Successfully.");
+  await res.status(StatusCodes.OK).send("Category updated Successfully.");
 });
 
 // @route             DELETE api/category/:category_name
@@ -75,10 +78,10 @@ Router.patch("/updateActiveStatus/:category_name", [auth], async (req, res) => {
   const { active } = req.body;
   const flag = await handleErrors(isCategoryExists, category_name);
   if (!flag) {
-    res.status(404).send({ msg: "Invalid product category" });
+    res.status(StatusCodes.NOT_FOUND).send({ msg: "Invalid product category" });
   }
   await handleErrors(updateActiveStatusOfCategory, { category_name, active });
-  await res.status(201).send("Cateogry Status Updated Successfully.");
+  await res.status(StatusCodes.CREATED).send("Cateogry Status Updated Successfully.");
 });
 
 export default Router;

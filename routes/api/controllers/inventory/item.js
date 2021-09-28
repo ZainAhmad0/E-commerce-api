@@ -1,5 +1,8 @@
 import express from "express";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 // middlewares
 import { auth } from "../../middlewares/auth/index.js";
 
@@ -25,10 +28,10 @@ const Router = express.Router();
 Router.patch("/update", [auth, itemValidator], async (req, res) => {
   const isValid = await validatePermission(req.user);
   if (!isValid) {
-    return res.status(401).send("Permissions denied");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Permissions denied");
   }
   await handleErrors(updateItem, req);
-  await res.status(201).send("Item updated Successfully.");
+  await res.status(StatusCodes.OK).send("Item updated Successfully.");
 });
 
 // @route             PATCH api/item/buy
@@ -38,14 +41,14 @@ Router.patch("/update", [auth, itemValidator], async (req, res) => {
 Router.patch("/buy", [auth, itemValidator], async (req, res) => {
   const isValid = await validatePermission(req.user);
   if (!isValid) {
-    return res.status(401).send("Permissions denied");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Permissions denied");
   }
   const availablityCheck = await handleErrors(checkAvailabality, req.body);
   if (!availablityCheck) {
-    return res.status(404).send("Out of stock");
+    return res.status(StatusCodes.NOT_FOUND).send("Out of stock");
   }
   await handleErrors(buyItem, req.body);
-  await res.status(201).send("Successfull");
+  await res.status(StatusCodes.OK).send("Successfull");
 });
 
 // function for validating permissions for manipulating items

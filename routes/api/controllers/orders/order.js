@@ -1,6 +1,9 @@
 import express from "express";
 import axios from "axios";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 // middlewares
 import { auth } from "../../middlewares/auth/index.js";
 
@@ -28,12 +31,12 @@ Router.post("/checkout", [auth], async (req, res) => {
   // checking that cart is empty or not
   const cartItems = await handleErrors(getItemsFromCart, req.user.userID);
   if (cartItems.length === 0) {
-    return res.status(404).send("Cart is empty");
+    return res.status(StatusCodes.NOT_FOUND).send("Cart is empty");
   }
   // checking that whether items in card are avaialble in stock or not
   const unavailableItems = await checkAvailabilityOfCartItems(cartItems);
   if (unavailableItems.length != 0) {
-    res.status(404).send(unavailableItems);
+    res.status(StatusCodes.NOT_FOUND).send(unavailableItems);
   }
   // updating inventory
   const token = req.headers["x-auth-token"];
@@ -44,7 +47,7 @@ Router.post("/checkout", [auth], async (req, res) => {
   await handleErrors(clearCart, req.user.userID);
   // clearing user shopping session
   await handleErrors(clearShoppingSession, req.user.userID);
-  await res.status(201).send("Order placed successfully");
+  await res.status(StatusCodes.OK).send("Order placed successfully");
 });
 
 async function checkAvailabilityOfCartItems(cartItems) {
@@ -76,9 +79,7 @@ async function updateInventory(token, cartItems) {
     };
     try {
       await axios.patch(URL, data, config);
-    } catch (error) {
-      error.response.status === 404;
-    }
+    } catch (error) {}
   }
 }
 

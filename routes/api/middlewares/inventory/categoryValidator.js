@@ -1,4 +1,8 @@
 import Joi from "joi";
+
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 //utils
 import { handleErrors, isCategoryExists } from "../../../../utils/index.js";
 
@@ -13,7 +17,7 @@ export default async (req, res, next) => {
   try {
     await categoryValidatorSchema.validateAsync(body);
   } catch (err) {
-    return res.status(400).send({
+    return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.details[0].message,
     });
   }
@@ -22,7 +26,7 @@ export default async (req, res, next) => {
   const { category_name } = body;
   const flag = await handleErrors(isCategoryExists, category_name);
   if (flag) {
-    return res.status(400).send({
+    return res.status(StatusCodes.BAD_REQUEST).send({
       error: "Category Already Exists",
     });
   } else {

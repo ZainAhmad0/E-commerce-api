@@ -3,6 +3,9 @@ import PasswordComplexity from "joi-password-complexity";
 //utils
 import { handleErrors, isUserExists } from "../../../../utils/index.js";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 export default async (req, res, next) => {
   const roles = {
     A: "Buyer",
@@ -43,7 +46,7 @@ export default async (req, res, next) => {
   try {
     await userValidatorSchema.validateAsync(body);
   } catch (err) {
-    return res.status(400).send({
+    return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.details[0].message,
     });
   }
@@ -52,7 +55,7 @@ export default async (req, res, next) => {
   const { email } = body;
   const isUserValid = await handleErrors(isUserExists, email);
   if (isUserValid) {
-    return res.status(400).send({
+    return res.status(StatusCodes.BAD_REQUEST).send({
       error: "User Already Exists",
     });
   } else {

@@ -21,6 +21,9 @@ import {
   updateActiveStatusOfProduct,
 } from "../../services/inventory/index.js";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 //router
 const Router = express.Router();
 
@@ -32,12 +35,12 @@ Router.post("/", [auth, productValidator], async (req, res) => {
   const { roleId } = req.user;
   const isValid = await handleErrors(validateUserRoleForAddingProduct, roleId);
   if (!isValid) {
-    return res.status(401).send("Permissions denied");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Permissions denied");
   }
   // assigning a product id to the product
   const product = { id: v4(), ...req.body };
   await handleErrors(addProduct, product);
-  await res.status(201).send("Product Added Successfully.");
+  await res.status(StatusCodes.CREATED).send("Product Added Successfully.");
 });
 
 // @route             GET api/category/:category_id
@@ -47,7 +50,7 @@ Router.post("/", [auth, productValidator], async (req, res) => {
 Router.get("/category/:category_id", async (req, res) => {
   const { category_id } = req.params;
   const products = await handleErrors(getProductsByCategory, category_id);
-  res.status(201).send(products);
+  res.status(StatusCodes.OK).send(products);
 });
 
 // @route             PATCH api/products/update/:title
@@ -58,7 +61,7 @@ Router.put("/update/:title", [auth], async (req, res) => {
   const { title } = req.params;
   const productExists = await handleErrors(isProductExists, title);
   if (!productExists) {
-    res.status(404).send({ msg: "Invalid product" });
+    res.status(StatusCodes.NOT_FOUND).send({ msg: "Invalid product" });
   }
   const product = await handleErrors(getProductByTitle, title);
   const updatedProduct = req.body;
@@ -69,7 +72,7 @@ Router.put("/update/:title", [auth], async (req, res) => {
   product.summary = updatedProduct.summary || product.summary;
   product.active = updatedProduct.active || product.active;
   await handleErrors(updateProduct, { title, product });
-  await res.status(200).send("Product updated Successfully.");
+  await res.status(StatusCodes.OK).send("Product updated Successfully.");
 });
 
 // @route             PATCH api/products/update/:title
@@ -81,10 +84,10 @@ Router.patch("/updateActiveStatus/:title", [auth], async (req, res) => {
   const { active } = req.body;
   const isProductValid = await handleErrors(isProductExists, title);
   if (!isProductValid) {
-    res.status(404).send({ msg: "Invalid product" });
+    res.status(StatusCodes.NOT_FOUND).send({ msg: "Invalid product" });
   }
   await handleErrors(updateActiveStatusOfProduct, { title, active });
-  await res.status(201).send("Product Status Updated Successfully.");
+  await res.status(StatusCodes.OK).send("Product Status Updated Successfully.");
 });
 
 export default Router;

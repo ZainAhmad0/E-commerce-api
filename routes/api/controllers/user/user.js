@@ -1,6 +1,9 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
 
+// http status codes
+import { StatusCodes } from "http-status-codes";
+
 //router
 const Router = express.Router();
 
@@ -38,11 +41,11 @@ Router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
     // validate user credentials
     const isUserValid = await handleErrors(validateUserCredentials, req);
     if (!isUserValid) {
-      return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: [{ msg: "Invalid Credentials" }] });
     }
     await returnToken(req, res);
   }
