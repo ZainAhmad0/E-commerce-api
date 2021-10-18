@@ -38,23 +38,23 @@ async function getUserShoppingSession(userID) {
 }
 
 // function for adding item into cart
-async function addItemToCart({ productId, quantity, userID }) {
+async function addItemToCart({ productId, quantity, userID, sellerId }) {
   const session_id = await getUserShoppingSession(userID);
-  const item = await getItemFromCart(productId);
+  const item = await getItemFromCart(productId, session_id);
   let query = "";
   if (item !== undefined) {
     query = `
-    UPDATE cart_item SET quantity =${quantity}+${item.quantity} WHERE product_id = '${productId}';
+    UPDATE cart_item SET quantity =${quantity}+${item.quantity} WHERE product_id = '${productId}' and seller_id='${sellerId}';
     `;
   } else {
-    query = `insert into inventory.public.cart_item (id,session_id,product_id,quantity) values ('${v4()}','${session_id}','${productId}',${quantity});`;
+    query = `insert into inventory.public.cart_item (id,session_id,product_id,seller_id,quantity) values ('${v4()}','${session_id}','${productId}','${sellerId}',${quantity});`;
   }
   await pool.query(query);
 }
 
 // function for getting item from cart
-async function getItemFromCart(productId) {
-  const query = `select * from inventory.public.cart_item where product_id='${productId}';`;
+async function getItemFromCart(productId, session_id) {
+  const query = `select * from inventory.public.cart_item where product_id='${productId}' and session_id = '${session_id}';`;
   const result = await pool.query(query);
   return result.rows === null ? null : result.rows[0];
 }
@@ -62,7 +62,7 @@ async function getItemFromCart(productId) {
 // function for getting all items from cart
 async function getItemsFromCart(userID) {
   const session_id = await getUserShoppingSession(userID);
-  const query = `select product_id, quantity from inventory.public.cart_item where session_id='${session_id}';`;
+  const query = `select product_id, quantity,seller_id from inventory.public.cart_item where session_id='${session_id}';`;
   const result = await pool.query(query);
   return result.rows === null ? null : result.rows;
 }

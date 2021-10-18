@@ -14,6 +14,7 @@ import {
   updateItem,
   checkAvailabality,
   buyItem,
+  getInventoryItems,
 } from "../../services/inventory/index.js";
 
 // utils
@@ -49,6 +50,15 @@ Router.patch("/buy", [auth, itemValidator], async (req, res) => {
   }
   await handleErrors(buyItem, req.body);
   await res.status(StatusCodes.OK).send("Successfull");
+});
+
+Router.get("/", [auth], async (req, res) => {
+  const isValid = await validatePermission(req.user);
+  if (!isValid) {
+    return res.status(StatusCodes.UNAUTHORIZED).send("Permissions denied");
+  }
+  const inventoryItems = await handleErrors(getInventoryItems, req.user.userID);
+  await res.status(StatusCodes.OK).send(inventoryItems);
 });
 
 // function for validating permissions for manipulating items

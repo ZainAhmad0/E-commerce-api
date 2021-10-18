@@ -14,9 +14,7 @@ async function getJSONWebToken(payload) {
   try {
     const token = await jwt.sign(payload, jwtSecret, { expiresIn: expiryTime });
     return token;
-  } catch (err) {
-    res.status(err.status.error_code).send(err.status.error_message);
-  }
+  } catch (err) {}
 }
 
 async function validateUserCredentials(req) {

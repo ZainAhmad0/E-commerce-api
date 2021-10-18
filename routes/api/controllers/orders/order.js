@@ -33,10 +33,10 @@ Router.post("/checkout", [auth], async (req, res) => {
   if (cartItems.length === 0) {
     return res.status(StatusCodes.NOT_FOUND).send("Cart is empty");
   }
-  // checking that whether items in card are avaialble in stock or not
+  // checking that whether items in cart are avaialble in stock or not
   const unavailableItems = await checkAvailabilityOfCartItems(cartItems);
   if (unavailableItems.length != 0) {
-    res.status(StatusCodes.NOT_FOUND).send(unavailableItems);
+    return res.status(StatusCodes.NOT_FOUND).send(unavailableItems);
   }
   // updating inventory
   const token = req.headers["x-auth-token"];
@@ -55,8 +55,10 @@ async function checkAvailabilityOfCartItems(cartItems) {
   for (let i = 0; i < cartItems.length; i++) {
     const data = {
       productId: cartItems[i].product_id,
+      seller_id: cartItems[i].seller_id,
       quantity: cartItems[i].quantity,
     };
+    console.log(data);
     const isAvailable = await handleErrors(checkAvailabality, data);
     if (!isAvailable) {
       unavailableItems.push(data);
@@ -66,6 +68,7 @@ async function checkAvailabilityOfCartItems(cartItems) {
 }
 
 async function updateInventory(token, cartItems) {
+  console.log(cartItems)
   let config = {
     headers: {
       "x-auth-token": token,
@@ -75,6 +78,7 @@ async function updateInventory(token, cartItems) {
   for (let i = 0; i < cartItems.length; i++) {
     const data = {
       productId: cartItems[i].product_id,
+      seller_id: cartItems[i].seller_id,
       quantity: cartItems[i].quantity,
     };
     try {

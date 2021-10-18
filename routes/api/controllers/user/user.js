@@ -46,6 +46,8 @@ Router.post(
     const isUserValid = await handleErrors(validateUserCredentials, req);
     if (!isUserValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({ errors: [{ msg: "Invalid Credentials" }] });
+    }else{
+      
     }
     await returnToken(req, res);
   }

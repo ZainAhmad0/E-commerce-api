@@ -1,0 +1,19 @@
+POST http://localhost:3000/localhost:3000/api/user/signup
+Content-Type: application/json
+
+{
+    "role": "Buyer",
+    "firstName": "Zain",
+    "middleName": "Ahmad",
+    "lastName": "Khan",
+    "mobile": "03165018960",
+    "email": "zain80775@gmail.com",
+    "password": "Zainahmad0@",
+    "repeat_password": "Zainahmad0@",
+    "profile": "sdaofhlknsdf",
+    "present_address": "HIT",
+    "permanent_address": "HIT",
+    "city": "Taxila",
+    "province": "Punjab",
+    "country": "Pakistan"
+}

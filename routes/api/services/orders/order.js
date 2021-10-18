@@ -22,8 +22,8 @@ async function checkoutOrder(userID) {
   await pool.query(orderDetailsQuery);
   const cartItems = await handleErrors(getItemsFromCart, userID);
   for (let i = 0; i < cartItems.length; i++) {
-    const { product_id } = cartItems[i];
-    const orderItemQuery = `insert into inventory.public.order_items (order_id,product_id,created_at) values ('${id}','${product_id}',current_timestamp);`;
+    const { product_id, seller_id } = cartItems[i];
+    const orderItemQuery = `insert into inventory.public.order_items (order_id,product_id,seller_id,created_at) values ('${id}','${product_id}','${seller_id}',current_timestamp);`;
     await pool.query(orderItemQuery);
   }
 }

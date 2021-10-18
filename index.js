@@ -1,6 +1,6 @@
 import express from "express";
 import user from "./routes/api/controllers/user/index.js";
-import {cart,order} from "./routes/api/controllers/orders/index.js";
+import { cart, order } from "./routes/api/controllers/orders/index.js";
 import {
   product,
   category,
@@ -24,3 +24,7 @@ app.get("/", (req, res) => res.send("API Running"));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port no ${PORT}`));
+
+export default app;
+
+// error

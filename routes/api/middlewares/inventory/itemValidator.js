@@ -9,6 +9,7 @@ export default async (req, res, next) => {
   const { body } = req;
   const itemValidatorSchema = Joi.object({
     productId: Joi.string().max(100).required(),
+    seller_id: Joi.string().max(100).required(),
     quantity: Joi.number().required(),
   });
 

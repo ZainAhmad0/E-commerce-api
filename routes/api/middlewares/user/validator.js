@@ -37,7 +37,7 @@ export default async (req, res, next) => {
     repeat_password: Joi.ref("password"),
     profile: Joi.string(),
     present_address: Joi.string().max(100).required(),
-    permanent_address: Joi.ref("present_address"),
+    permanent_address: Joi.string().max(100).required(),
     city: Joi.string().required().max(50),
     province: Joi.string().required().max(50),
     country: Joi.string().required().max(50),

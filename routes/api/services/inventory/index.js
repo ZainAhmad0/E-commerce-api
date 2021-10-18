@@ -20,6 +20,8 @@ import {
   updateItem,
   checkAvailabality,
   buyItem,
+  getInventoryItems,
+  verifySellerAgainstProduct
 } from "./item.js";
 
 export {
@@ -38,4 +40,6 @@ export {
   updateItem,
   checkAvailabality,
   buyItem,
+  getInventoryItems,
+  verifySellerAgainstProduct
 };
